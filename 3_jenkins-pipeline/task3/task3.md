@@ -108,7 +108,7 @@ Modify: 2022-09-04 06:25:25.022148967 +0000
 Change: 2022-09-04 07:15:10.586492205 +0000
  Birth: -
 ```
-- Group có ID 998 đang có vấn đề, chúng ta cần đặt lại group này trong Jenkins Slave, bằng cách thêm group docker2 tương ứng với GUI ở trên(998)
+- Group có ID 998 đang có vấn đề, chúng ta cần đặt lại group này trong Jenkins Slave, bằng cách thêm group` docker2` tương ứng với GUI ở trên(998)
 ```
 jenkins@0007222585af:~$ groupadd -g 998 docker2
 jenkins@0007222585af:~$ stat /var/run/docker.sock
@@ -121,7 +121,7 @@ Modify: 2022-09-04 06:25:25.022148967 +0000
 Change: 2022-09-04 07:28:47.115352680 +0000
  Birth: -
 ```
-- Thêm group docker2 cho user jenkins và kiểm tra các groups mà user jenkins có
+- Thêm group `docker2` cho user `jenkins` và kiểm tra các groups mà user `jenkins` có
 ```/bin/bash
 root@0007222585af:/# usermod -aG docker2 jenkins
 root@0007222585af:/# groups jenkins
