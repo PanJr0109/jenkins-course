@@ -86,3 +86,45 @@ Tham khảo Jenkinsfile trong **task 3** này.
 ## 4. Yêu cầu kết quả
 
 Chụp lại màn hình kết quả chạy Job Build và console output.
+
+## 5.Troubleshooting
+
+### Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+
+Cách xử lý:
+- Truy cập vào Container Jenkins Slave:
+```/bin/bash
+docker exec -it <container_slave_id> bash
+```
+- Trong Jenkins Slave, kiểm tra Group ID/Group Name của docker socket
+```
+root@0007222585af:/# stat /var/run/docker.sock
+  File: /var/run/docker.sock
+  Size: 0               Blocks: 0          IO Block: 4096   socket
+Device: 19h/25d Inode: 1016        Links: 1
+Access: (0666/srw-rw-rw-)  Uid: (    0/    root)   Gid: (  998/ UNKNOWN)
+Access: 2022-09-04 07:26:17.420050925 +0000
+Modify: 2022-09-04 06:25:25.022148967 +0000
+Change: 2022-09-04 07:15:10.586492205 +0000
+ Birth: -
+```
+- Group có ID 998 đang có vấn đề, chúng ta cần đặt lại group này trong Jenkins Slave, bằng cách thêm group docker2 tương ứng với GUI ở trên(998)
+```
+jenkins@0007222585af:~$ groupadd -g 998 docker2
+jenkins@0007222585af:~$ stat /var/run/docker.sock
+  File: /var/run/docker.sock
+  Size: 0               Blocks: 0          IO Block: 4096   socket
+Device: 19h/25d Inode: 1016        Links: 1
+Access: (0660/srw-rw----)  Uid: (    0/    root)   Gid: (  998/ docker2)
+Access: 2022-09-04 07:42:41.003950502 +0000
+Modify: 2022-09-04 06:25:25.022148967 +0000
+Change: 2022-09-04 07:28:47.115352680 +0000
+ Birth: -
+```
+- Thêm group docker2 cho user jenkins và kiểm tra các groups mà user jenkins có
+```/bin/bash
+root@0007222585af:/# usermod -aG docker2 jenkins
+root@0007222585af:/# groups jenkins
+jenkins : jenkins docker docker2
+```
+- Trên Jenkins UI, vào phần quản lý node, thực hiện disconnect node và kết nối lại để load lại cấu hình cho Jenkins Slave.
