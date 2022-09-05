@@ -18,7 +18,7 @@ Docker credential cấu tạo từ 3 thành phần: username, password, và regi
 |--|--|
 | DOCKER_REGISTRY_USERNAME | Username để xác thực với Docker Registry |
 | DOCKER_REGISTRY_PASSWORD| Password để xác thực với Docker Registry |
-| DOCKER_REGISTRY_NAME| Tên của Registry |
+| DOCKER_REGISTRY_NAME| Tên của Registry, ví dụ: docker.io/<username> |
 
 ![Cred Docker](../images/cred_docker_name.png)
 
